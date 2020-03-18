@@ -26,6 +26,9 @@ const (
 	LT = "<" // less than
 	GT = ">" // greater than
 
+	EQ     = "=="
+	NOT_EQ = "!="
+
 	// デリミタ
 	COMMA     = ","
 	SEMICOLON = ";"
