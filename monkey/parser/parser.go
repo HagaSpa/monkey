@@ -5,6 +5,7 @@ import (
 	"monkey/ast"
 	"monkey/lexer"
 	"monkey/token"
+	"strconv"
 )
 
 // 演算子間の優先順位. 定数が大きい方が優先順位が高い
@@ -40,7 +41,8 @@ func New(l *lexer.Lexer) *Parser {
 	}
 	// preficParserFnマップの初期化、構文解析関数を登録する
 	p.prefixParserFns = make(map[token.TokenType]prefixParserFn)
-	p.registerPrefix(token.IDENT, p.parserIdentifier)
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
+	p.registerPrefix(token.INT, p.parseIntegerLiteral)
 
 	// 2つのトークンを読み込む. curTokenとpeekTokenの両方がセットされる.
 	p.nextToken()
@@ -134,7 +136,7 @@ func (p *Parser) parseExpression(pracedence int) ast.Expression {
 	return leftExp
 }
 
-func (p *Parser) parserIdentifier() ast.Expression {
+func (p *Parser) parseIdentifier() ast.Expression {
 	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
 
@@ -171,4 +173,18 @@ func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParserFn) {
 
 func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParserFn) {
 	p.infixParserFn[tokenType] = fn
+}
+
+func (p *Parser) parseIntegerLiteral() ast.Expression {
+	lit := &ast.IntegerLiteral{Token: p.curToken}
+
+	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
+	if err != nil {
+		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
+		p.errors = append(p.errors, msg)
+		return nil
+	}
+
+	lit.Value = value
+	return lit
 }
