@@ -59,6 +59,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 	p.registerPrefix(token.TRUE, p.parseBoolean)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
+	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 
 	p.infixParserFn = make(map[token.TokenType]infixParserFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
@@ -276,4 +277,17 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	p.nextToken()
 	expression.Right = p.parseExpression(precedence)
 	return expression
+}
+
+// ()をパースする
+func (p *Parser) parseGroupedExpression() ast.Expression {
+	//「(」を消費する
+	p.nextToken()
+	// 「(」から「)」までの文字を消費する。parsePrefixExpression or parseInfixExpression
+	exp := p.parseExpression(LOWEST)
+	// 「)」がないならエラー
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+	return exp
 }
