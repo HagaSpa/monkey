@@ -22,13 +22,13 @@ jobs:
       uses: actions/checkout@v2
     
     - name: ls
-      cd: ls
+      run: ls
 
     - name: Go to GOROOT directory
       run: cd monkey/
     
     - name: ls2
-      cd: ls
+      run: ls
 
     - name: Test Lexer
       run: go test ./lexer/
