@@ -20,9 +20,15 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+    
+    - name: ls
+      cd: ls
 
     - name: Go to GOROOT directory
       run: cd monkey/
+    
+    - name: ls2
+      cd: ls
 
     - name: Test Lexer
       run: go test ./lexer/
