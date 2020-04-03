@@ -24,7 +24,7 @@ jobs:
       run: ls
 
     - name: Go to GOROOT directory
-      run: cd monkey/
+      run: cd monkey
     
     - name: ls2
       run: ls
