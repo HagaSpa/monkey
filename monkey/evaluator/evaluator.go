@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	// Eval()を実行するたびobject.Booleanインスタンスを生成したくないので,ここで初期化
+	// Eval()を実行するたびobjectインスタンスを生成したくないので,ここで初期化
+	NULL  = &object.Null{}
 	TRUE  = &object.Boolean{Value: true}
 	FALSE = &object.Boolean{Value: false}
 )
