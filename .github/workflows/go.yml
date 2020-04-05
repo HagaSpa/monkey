@@ -29,3 +29,6 @@ jobs:
       run: go test ./parser/
       working-directory: ./monkey
     
+    - name: Test Evaluator
+      run: go test ./evaluator/
+      working-directory: ./monkey
