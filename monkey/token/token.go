@@ -12,8 +12,9 @@ const (
 	EOF     = "EOF"     // 終端文字
 
 	// 識別子 + リテラル
-	IDENT = "IDENT" // add, foobar, x, y, ...
-	INT   = "INT"   // 1234
+	IDENT  = "IDENT"  // add, foobar, x, y, ...
+	INT    = "INT"    // 1234
+	STRING = "STRING" // 文字型
 
 	// 演算子
 	ASSIGN   = "="
