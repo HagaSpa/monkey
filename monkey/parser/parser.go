@@ -18,6 +18,7 @@ const (
 	PRODUCT     // *
 	PREFIX      // -x or !x
 	CALL        // myFunction(x)
+	INDEX       // array[index]
 )
 
 // トークンタイプと優先順位との関連付
@@ -31,6 +32,7 @@ var precedences = map[token.TokenType]int{
 	token.SLASH:    PRODUCT,
 	token.ASTERISK: PRODUCT,
 	token.LPAREN:   CALL,
+	token.LBRACKET: INDEX,
 }
 
 type (
@@ -76,6 +78,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.LT, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
+	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 
 	// 2つのトークンを読み込む. curTokenとpeekTokenの両方がセットされる.
 	p.nextToken()
@@ -378,6 +381,19 @@ func (p *Parser) parseIfExpression() ast.Expression {
 	}
 
 	return expression
+}
+
+func (p *Parser) parseIndexExpression(left ast.Expression) ast.Expression {
+	exp := &ast.IndexExpression{Token: p.curToken, Left: left}
+
+	p.nextToken()
+	exp.Index = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RBRACKET) {
+		return nil
+	}
+
+	return exp
 }
 
 // funをパースする
