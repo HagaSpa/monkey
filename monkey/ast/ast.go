@@ -312,6 +312,7 @@ func (ce *CallExpression) String() string {
 }
 
 // 添字演算子
+// e.g.. myArray[0], [1, 2, 3][0]
 type IndexExpression struct {
 	Token token.Token // '[' トークン
 	Left  Expression
