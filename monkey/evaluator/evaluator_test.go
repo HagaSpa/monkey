@@ -360,6 +360,7 @@ func TestBuiltinFunctions(t *testing.T) {
 		input    string
 		expected interface{}
 	}{
+		// len
 		{`len("")`, 0},
 		{`len("four")`, 4},
 		{`len("hello world")`, 11},
@@ -367,6 +368,11 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`len("one", "two")`, "wrong number of arguments. got=2, want=1"},
 		{`let array = [0, 1, 2]; len(array);`, 3},
 		{`len([0,1])`, 2},
+		// first
+		{`let array = [0, 1, 2]; first(array)`, 0},
+		{`let a = [0,1,2] first(a)`, 0},
+		{`let a = [4,1]; first(a)`, 4},
+		{`let a = [2]; first(a)`, 2},
 	}
 
 	for _, tt := range tests {
