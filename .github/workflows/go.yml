@@ -32,3 +32,7 @@ jobs:
     - name: Test Evaluator
       run: go test ./evaluator/
       working-directory: ./monkey
+    
+    - name: Test Object
+      run: go test ./object/
+      working-directory: ./monkey
